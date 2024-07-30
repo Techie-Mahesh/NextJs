@@ -25,7 +25,7 @@ const useStyles = makeStyles(() => ({
 export default function Navbar() {
   const pathname = usePathname();
   const classes = useStyles();
-  const [isLoggedIn, setIsLoggedIn] = React.useState(false);
+  const [isLoggedIn, setIsLoggedIn] = React.useState(true);
   const routes = [
     {
       id: "home",
@@ -52,10 +52,10 @@ export default function Navbar() {
         <Toolbar>
           <Grid container justifyContent={"space-between"}>
             <Grid item sx={{ display: "flex" }}>
-              <Avatar sx={{ bgcolor: "#fff", mr: 2 }}>
+              <Avatar sx={{ bgcolor: "#fff", mr: 1 }}>
                 <HomeRoundedIcon color="primary" />
               </Avatar>
-              <Typography style={{ fontSize: "medium", margin: "auto" }}>
+              <Typography variant="h5" sx={{ margin: "auto", mr: 1 }}>
                 Property Pulse
               </Typography>
               {routes.map(

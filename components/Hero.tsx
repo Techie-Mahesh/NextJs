@@ -20,7 +20,8 @@ const useStyles = makeStyles({
     backgroundColor: "#1976d2",
     display: "flex",
     flexDirection: "column",
-    justifyContent: "center"
+    justifyContent: "center",
+    padding: "80px 0px"
   }
 });
 
@@ -28,7 +29,7 @@ const Hero = () => {
   const classes = useStyles();
   return (
     <Box className={classes.container}>
-      <Typography variant="h3" sx={{ color: "white" }} align="center">
+      <Typography variant="h2" sx={{ color: "white" }} align="center">
         Find The Perfect Rental
       </Typography>
       <Typography align="center" sx={{ color: "white" }}>
@@ -65,7 +66,10 @@ const Hero = () => {
         <Grid item xs={1}>
           <Button
             variant="contained"
-            style={{ backgroundColor: "cornflowerblue" }}
+            sx={{
+              backgroundColor: "cornflowerblue",
+              textTransform: "capitalize"
+            }}
           >
             Search
           </Button>

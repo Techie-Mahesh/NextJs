@@ -1,7 +1,8 @@
+import Properties from "@/components/Properties";
 import React from "react";
 
-const Properties = () => {
-  return <div>Properties</div>;
+const PropertiesPage = () => {
+  return <Properties />;
 };
 
-export default Properties;
+export default PropertiesPage;
