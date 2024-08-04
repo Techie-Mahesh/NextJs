@@ -10,8 +10,12 @@ const connectDB = async () => {
     return;
   }
   //   Connect Database
+  console.log("Db ==>", process.env.MONGO_URI);
   try {
-    mongoose.connect(process.env.MONGO_URI);
+    mongoose.connect(
+      "mongodb+srv://admin:admin@cluster0.aij5irh.mongodb.net/propertyPulse?retryWrites=true&w=majority&appName=Cluster0" ??
+        ""
+    );
     connected = true;
   } catch (err) {
     console.log(err);

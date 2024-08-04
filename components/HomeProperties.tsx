@@ -1,10 +1,15 @@
 import { Box, Button, Container, Grid, Typography } from "@mui/material";
 import React from "react";
-import properties from "../properties.json";
-import Property from "./Property";
+import PropertyCard from "./PropertyCard";
+import connectDB from "@/config/database";
+import Property from "@/models/Property";
 
-const HomeProperties = () => {
-  const recentProperties = properties.slice(0, 3);
+const HomeProperties = async () => {
+  await connectDB();
+  const recentProperties = await Property.find({})
+    .sort({ createdAt: -1 })
+    .limit(3)
+    .lean();
   return (
     <>
       <Typography
@@ -19,7 +24,7 @@ const HomeProperties = () => {
         {recentProperties?.length > 0 ? (
           recentProperties.map(item => (
             <Grid item xs={12} sm={6} md={4} key={item._id}>
-              <Property property={item} />
+              <PropertyCard property={item} />
             </Grid>
           ))
         ) : (

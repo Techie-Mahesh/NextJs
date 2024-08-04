@@ -36,7 +36,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Property = (props: any) => {
+const PropertyCard = (props: any) => {
   const { property } = props;
   const classes = useStyles();
   const getRateDisplay = () => {
@@ -115,4 +115,4 @@ const Property = (props: any) => {
   );
 };
 
-export default Property;
+export default PropertyCard;

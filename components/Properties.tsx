@@ -1,15 +1,14 @@
 import React from "react";
-import properties from "../properties.json";
 import { Box, Grid } from "@mui/material";
-import Property from "./Property";
+import PropertyCard from "./PropertyCard";
 
-const Properties = () => {
+const Properties = ({ properties }: any) => {
   return (
     <Grid container spacing={3} p={4}>
       {properties?.length > 0 ? (
-        properties.map(item => (
+        properties.map((item: any) => (
           <Grid item xs={12} sm={6} md={4} key={item._id}>
-            <Property property={item} />
+            <PropertyCard property={item} />
           </Grid>
         ))
       ) : (
