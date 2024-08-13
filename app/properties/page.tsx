@@ -12,7 +12,7 @@ const PropertiesPage = async () => {
     console.error("Error fetching properties:", error);
   }
 
-  return <Properties properties={JSON.parse(JSON.stringify(properties))} />;
+  return <Properties properties={properties} />;
 };
 
 export default PropertiesPage;

@@ -1,4 +1,4 @@
-import mongoose, { Mongoose } from "mongoose";
+import mongoose from "mongoose";
 
 let connected = false;
 const connectDB = async () => {
@@ -10,12 +10,9 @@ const connectDB = async () => {
     return;
   }
   //   Connect Database
-  console.log("Db ==>", process.env.MONGO_URI);
+  console.log("Db ==>", process.env.MONGODB_URI);
   try {
-    mongoose.connect(
-      "mongodb+srv://admin:admin@cluster0.aij5irh.mongodb.net/propertyPulse?retryWrites=true&w=majority&appName=Cluster0" ??
-        ""
-    );
+    await mongoose.connect(process.env.MONGODB_URI ?? "");
     connected = true;
   } catch (err) {
     console.log(err);

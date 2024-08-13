@@ -21,7 +21,9 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: "white",
     color: "#1976d2",
     textTransform: "capitalize",
-    fontWeight: "bold"
+    fontWeight: "bold",
+    borderRadius: 5,
+    padding: "4px 8px"
   },
   content: {
     display: "flex",
@@ -43,11 +45,11 @@ const PropertyCard = (props: any) => {
     const { rates } = property;
 
     if (rates.monthly) {
-      return `${rates.monthly.toLocaleString()}/mo`;
+      return `$${rates.monthly.toLocaleString()}/mo`;
     } else if (rates.weekly) {
-      return `${rates.weekly.toLocaleString()}/wk`;
+      return `$${rates.weekly.toLocaleString()}/wk`;
     } else if (rates.nightly) {
-      return `${rates.nightly.toLocaleString()}/night`;
+      return `$${rates.nightly.toLocaleString()}/night`;
     }
   };
   return (
@@ -61,9 +63,11 @@ const PropertyCard = (props: any) => {
             alt="green iguana"
             loading="lazy"
           />
-          <Button className={classes.button} variant="contained">
-            {getRateDisplay()}
-          </Button>
+          <Box className={classes.button}>
+            <Typography variant="body2" sx={{ fontWeight: "bold" }}>
+              {getRateDisplay()}
+            </Typography>
+          </Box>
         </Box>
         <CardContent sx={{ p: 2 }}>
           <Typography gutterBottom component="div">
