@@ -63,14 +63,14 @@ export default function Navbar() {
                   route.show && (
                     <Link href={route.href} key={route.id} underline="none">
                       <Button
-                        color="inherit"
                         className={
                           route.href === pathname ? classes.button : ""
                         }
                         sx={{
                           textTransform: "capitalize",
                           ml: 1,
-                          bgcolor: route.href === pathname ? "#000000" : ""
+                          bgcolor: route.href === pathname ? "#000000" : "",
+                          color: "white"
                         }}
                         variant={route.href === pathname ? "contained" : "text"}
                       >
