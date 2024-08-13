@@ -6,7 +6,7 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
-import { Avatar, Badge, Grid, IconButton } from "@mui/material";
+import { Avatar, Badge, Grid, IconButton, Link } from "@mui/material";
 import { usePathname } from "next/navigation";
 import GoogleIcon from "@mui/icons-material/Google";
 import CircleNotificationsIcon from "@mui/icons-material/CircleNotifications";
@@ -61,20 +61,22 @@ export default function Navbar() {
               {routes.map(
                 route =>
                   route.show && (
-                    <Button
-                      key={route.id}
-                      color="inherit"
-                      className={route.href === pathname ? classes.button : ""}
-                      href={route.href}
-                      sx={{
-                        textTransform: "capitalize",
-                        ml: 1,
-                        bgcolor: route.href === pathname ? "#000000" : ""
-                      }}
-                      variant={route.href === pathname ? "contained" : "text"}
-                    >
-                      {route.label}
-                    </Button>
+                    <Link href={route.href} key={route.id} underline="none">
+                      <Button
+                        color="inherit"
+                        className={
+                          route.href === pathname ? classes.button : ""
+                        }
+                        sx={{
+                          textTransform: "capitalize",
+                          ml: 1,
+                          bgcolor: route.href === pathname ? "#000000" : ""
+                        }}
+                        variant={route.href === pathname ? "contained" : "text"}
+                      >
+                        {route.label}
+                      </Button>
+                    </Link>
                   )
               )}
             </Grid>

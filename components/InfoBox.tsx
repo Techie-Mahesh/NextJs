@@ -3,6 +3,7 @@ import {
   CardActions,
   CardContent,
   CardHeader,
+  Link,
   Paper
 } from "@mui/material";
 import React from "react";
@@ -29,17 +30,22 @@ const InfoBox = (props: InfoBoxProps) => {
       <CardHeader title={info.header} />
       <CardContent>{info.content}</CardContent>
       <CardActions>
-        <Button
-          sx={{
-            bgcolor: info.buttonInfo.backgroundColor,
-            color: "white",
-            textTransform: "capitalize"
-          }}
-          variant="contained"
-          href={info.buttonInfo.link}
-        >
-          {info.buttonInfo.text}
-        </Button>
+        <Link href={info.buttonInfo.link} underline="none">
+          <Button
+            sx={{
+              bgcolor: info.buttonInfo.backgroundColor,
+              color: "white",
+              textTransform: "capitalize",
+              "&:hover": {
+                backgroundColor: info.buttonInfo.backgroundColor,
+                opacity: 0.8
+              }
+            }}
+            variant="contained"
+          >
+            {info.buttonInfo.text}
+          </Button>
+        </Link>
       </CardActions>
     </Paper>
   );

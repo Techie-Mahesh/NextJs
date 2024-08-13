@@ -7,6 +7,7 @@ import {
   CardContent,
   CardMedia,
   Divider,
+  Link,
   Paper,
   Typography
 } from "@mui/material";
@@ -105,15 +106,16 @@ const PropertyCard = (props: any) => {
         >
           {property.location.city} {property.location.state}
         </Button>
-        <Button
-          size="small"
-          color="primary"
-          variant="contained"
-          sx={{ textTransform: "capitalize" }}
-          href={`/properties/${property._id}`}
-        >
-          Details
-        </Button>
+        <Link href={`/properties/${property._id}`} underline="none">
+          <Button
+            size="small"
+            color="primary"
+            variant="contained"
+            sx={{ textTransform: "capitalize" }}
+          >
+            Details
+          </Button>
+        </Link>
       </CardActions>
     </Paper>
   );

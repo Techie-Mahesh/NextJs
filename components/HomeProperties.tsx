@@ -1,4 +1,4 @@
-import { Box, Button, Container, Grid, Typography } from "@mui/material";
+import { Box, Button, Container, Grid, Link, Typography } from "@mui/material";
 import React from "react";
 import PropertyCard from "./PropertyCard";
 import connectDB from "@/config/database";
@@ -32,17 +32,18 @@ const HomeProperties = async () => {
         )}
       </Grid>
       <Box sx={{ textAlign: "center" }}>
-        <Button
-          variant="contained"
-          href="./properties"
-          sx={{
-            bgcolor: "#000000",
-            color: "white",
-            textTransform: "capitalize"
-          }}
-        >
-          view more properties
-        </Button>
+        <Link href="/properties" underline="none">
+          <Button
+            variant="contained"
+            sx={{
+              bgcolor: "#374151",
+              color: "white",
+              textTransform: "capitalize"
+            }}
+          >
+            view more properties
+          </Button>
+        </Link>
       </Box>
     </>
   );
