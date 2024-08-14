@@ -6,7 +6,7 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
-import { Avatar, Badge, Grid, IconButton, Link } from "@mui/material";
+import { Avatar, Badge, Grid, Link } from "@mui/material";
 import { usePathname } from "next/navigation";
 import GoogleIcon from "@mui/icons-material/Google";
 import CircleNotificationsIcon from "@mui/icons-material/CircleNotifications";
