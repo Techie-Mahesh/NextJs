@@ -1,17 +1,31 @@
 "use client";
-import * as React from "react";
+import React, { useEffect, useState } from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
-import { Avatar, Badge, Grid, Link } from "@mui/material";
+import {
+  Avatar,
+  Badge,
+  Fade,
+  Grid,
+  IconButton,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemText,
+  Paper,
+  Popper
+} from "@mui/material";
 import { usePathname } from "next/navigation";
 import GoogleIcon from "@mui/icons-material/Google";
 import CircleNotificationsIcon from "@mui/icons-material/CircleNotifications";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import makeStyles from "@mui/styles/makeStyles";
+import { signIn, signOut, useSession, getProviders } from "next-auth/react";
+import Link from "next/link";
 
 const useStyles = makeStyles(() => ({
   button: {
@@ -23,9 +37,33 @@ const useStyles = makeStyles(() => ({
 }));
 
 export default function Navbar() {
+  const { data: session } = useSession();
+
+  const profileImage = session?.user?.image;
+
   const pathname = usePathname();
   const classes = useStyles();
-  const [isLoggedIn, setIsLoggedIn] = React.useState(true);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [providers, setProviders] = useState(null);
+
+  const profileList = [
+    {
+      id: "profile",
+      label: "Your Profile",
+      href: "/profile"
+    },
+    {
+      id: "savedProperties",
+      label: "Saved Properties",
+      href: "/savedproperties"
+    },
+    {
+      id: "signOut",
+      label: "Sign Out",
+      href: "/"
+    }
+  ];
+
   const routes = [
     {
       id: "home",
@@ -37,22 +75,39 @@ export default function Navbar() {
       id: "properties",
       label: "Properties",
       href: "/properties",
-      show: isLoggedIn
+      show: session
     },
     {
       id: "addProperty",
       label: "Add Property",
-      href: "/addproperty",
+      href: "/properties/add",
       show: true
     }
   ];
+  useEffect(() => {
+    const fetchProperties = async () => {
+      const res: any = await getProviders();
+      setProviders(res);
+    };
+    fetchProperties();
+  }, []);
+  const handleProfile = (id: string) => {
+    if (id === "signOut") {
+      setAnchorEl(null);
+      signOut();
+    }
+  };
   return (
     <Box sx={{ flexGrow: 1, borderBottom: "1px solid white" }}>
-      <AppBar position="static">
+      <AppBar position="static" sx={{ p: 1 }}>
         <Toolbar>
-          <Grid container justifyContent={"space-between"}>
+          <Grid
+            container
+            justifyContent={"space-between"}
+            alignItems={"center"}
+          >
             <Grid item sx={{ display: "flex" }}>
-              <Avatar sx={{ bgcolor: "#fff", mr: 1 }}>
+              <Avatar sx={{ bgcolor: "#fff", ml: 3, mr: 1 }}>
                 <HomeRoundedIcon color="primary" />
               </Avatar>
               <Typography variant="h5" sx={{ margin: "auto", mr: 1 }}>
@@ -61,7 +116,7 @@ export default function Navbar() {
               {routes.map(
                 route =>
                   route.show && (
-                    <Link href={route.href} key={route.id} underline="none">
+                    <Link href={route.href} key={route.id}>
                       <Button
                         className={
                           route.href === pathname ? classes.button : ""
@@ -82,27 +137,73 @@ export default function Navbar() {
             </Grid>
 
             <Grid item gap={2} sx={{ display: "flex", alignItems: "center" }}>
-              {!isLoggedIn && (
-                <Button
-                  startIcon={<GoogleIcon />}
-                  variant="contained"
-                  className={classes.button}
-                  sx={{
-                    bgcolor: "#000000",
-                    mr: 2,
-                    textTransform: "capitalize"
-                  }}
-                >
-                  Login or Register
-                </Button>
-              )}
-              {isLoggedIn && (
-                <Box display={"flex"} alignItems={"center"} gap={2}>
-                  <Badge badgeContent={4} color="error">
-                    <CircleNotificationsIcon />
-                  </Badge>
-                  <AccountCircleIcon />
-                </Box>
+              {!session &&
+                providers &&
+                Object.values(providers).map((provider: any) => (
+                  <Button
+                    startIcon={<GoogleIcon />}
+                    key={provider.id}
+                    variant="contained"
+                    onClick={() => signIn(provider.id)}
+                    className={classes.button}
+                    sx={{
+                      bgcolor: "#000000",
+                      mr: 2,
+                      textTransform: "capitalize"
+                    }}
+                  >
+                    Login or Register
+                  </Button>
+                ))}
+              {session && (
+                <>
+                  <Box display={"flex"} alignItems={"center"} gap={2}>
+                    <Link href="/messages">
+                      <Badge badgeContent={4} color="error">
+                        <CircleNotificationsIcon
+                          fontSize="large"
+                          sx={{ color: "white" }}
+                        />
+                      </Badge>
+                    </Link>
+
+                    <IconButton
+                      onClick={event =>
+                        setAnchorEl(anchorEl ? null : event.currentTarget)
+                      }
+                    >
+                      <Avatar src={profileImage || ""} />
+                    </IconButton>
+                  </Box>
+                  <Popper
+                    sx={{ zIndex: 1200 }}
+                    open={Boolean(anchorEl)}
+                    anchorEl={anchorEl}
+                    placement={"bottom-end"}
+                    transition
+                  >
+                    {({ TransitionProps }) => (
+                      <Fade {...TransitionProps} timeout={350}>
+                        <Paper>
+                          <List>
+                            {profileList.map(item => (
+                              <ListItem disablePadding key={item.id}>
+                                <Link href={item.href} passHref legacyBehavior>
+                                  <ListItemButton>
+                                    <ListItemText
+                                      primary={item.label}
+                                      onClick={() => handleProfile(item.id)}
+                                    />
+                                  </ListItemButton>
+                                </Link>
+                              </ListItem>
+                            ))}
+                          </List>
+                        </Paper>
+                      </Fade>
+                    )}
+                  </Popper>
+                </>
               )}
             </Grid>
           </Grid>
