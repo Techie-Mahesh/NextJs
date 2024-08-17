@@ -15,6 +15,7 @@ import {
 } from "@mui/material";
 import React from "react";
 import Textarea from "@mui/joy/Textarea";
+import addProperty from "@/app/actions/addProperty";
 
 const PropertyAddForm = () => {
   const formFields = [
@@ -187,12 +188,13 @@ const PropertyAddForm = () => {
       isRequired: true
     }
   ];
+
   return (
     <Container sx={{ padding: "24px 16px" }}>
       <Typography variant="h5" align="center" sx={{ fontWeight: 600, mb: 3 }}>
         Add Property
       </Typography>
-      <form>
+      <form action={addProperty}>
         <Box>
           {formFields.map(field => (
             <React.Fragment key={field.id}>

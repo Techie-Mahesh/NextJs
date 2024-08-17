@@ -37,9 +37,13 @@ const HomeProperties = async () => {
           <Button
             variant="contained"
             sx={{
-              bgcolor: "#374151",
+              bgcolor: "#000000",
               color: "white",
-              textTransform: "capitalize"
+              textTransform: "capitalize",
+              "&:hover": {
+                bgcolor: "#000000",
+                opacity: 0.8
+              }
             }}
           >
             view more properties
