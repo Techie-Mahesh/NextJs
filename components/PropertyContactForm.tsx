@@ -8,8 +8,8 @@ import {
   Paper,
   Typography
 } from "@mui/material";
-import { TextareaAutosize as BaseTextareaAutosize } from "@mui/base/TextareaAutosize";
 import TelegramIcon from "@mui/icons-material/Telegram";
+import Textarea from "@mui/joy/Textarea";
 import React from "react";
 
 const PropertyContactForm = () => {
@@ -64,10 +64,7 @@ const PropertyContactForm = () => {
                 {field.type === "text" ? (
                   <OutlinedInput placeholder={field.placeholder} size="small" />
                 ) : (
-                  <BaseTextareaAutosize
-                    minRows={5}
-                    placeholder={field.placeholder}
-                  />
+                  <Textarea minRows={5} placeholder={field.placeholder} />
                 )}
               </FormControl>
             </React.Fragment>

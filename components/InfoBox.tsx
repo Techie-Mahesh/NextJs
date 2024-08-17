@@ -3,10 +3,10 @@ import {
   CardActions,
   CardContent,
   CardHeader,
-  Link,
   Paper
 } from "@mui/material";
 import React from "react";
+import Link from "next/link";
 
 interface InfoBox {
   header: string;
@@ -30,7 +30,7 @@ const InfoBox = (props: InfoBoxProps) => {
       <CardHeader title={info.header} />
       <CardContent>{info.content}</CardContent>
       <CardActions>
-        <Link href={info.buttonInfo.link} underline="none">
+        <Link href={info.buttonInfo.link}>
           <Button
             sx={{
               bgcolor: info.buttonInfo.backgroundColor,

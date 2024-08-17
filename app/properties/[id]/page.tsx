@@ -1,7 +1,9 @@
 import PropertyHeaderImage from "@/components/PropertyHeaderImage";
 import connectDB from "@/config/database";
 import Property from "@/models/Property";
-import { Box, Button, Grid, IconButton, Link, Typography } from "@mui/material";
+import { Box, Button, Grid, IconButton, Typography } from "@mui/material";
+import Link from "next/link";
+
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import React from "react";
 import PropertyDetails from "@/components/PropertyDetails";
@@ -17,20 +19,19 @@ const PropertyPage = async ({ params }: any) => {
     <>
       <PropertyHeaderImage />
       <Box sx={{ padding: "10px 30px" }}>
-        <Link
-          href="/properties"
-          underline="none"
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            color: "blue",
-            "&:hover": { color: "darkblue" }
-          }}
-        >
-          <IconButton edge="start" color="inherit" aria-label="back">
-            <ArrowBackIcon />
-          </IconButton>
-          Back to Properties
+        <Link href="/properties">
+          <Button
+            startIcon={<ArrowBackIcon />}
+            color="inherit"
+            aria-label="back"
+            variant="text"
+            sx={{
+              color: "blue",
+              "&:hover": { color: "darkblue" }
+            }}
+          >
+            Back to Properties
+          </Button>
         </Link>
       </Box>
       <Box

@@ -7,11 +7,11 @@ import {
   CardContent,
   CardMedia,
   Divider,
-  Link,
   Paper,
   Typography
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
+import Link from "next/link";
 import React from "react";
 
 const useStyles = makeStyles(theme => ({
@@ -106,7 +106,7 @@ const PropertyCard = (props: any) => {
         >
           {property.location.city} {property.location.state}
         </Button>
-        <Link href={`/properties/${property._id}`} underline="none">
+        <Link href={`/properties/${property._id}`}>
           <Button
             size="small"
             color="primary"
