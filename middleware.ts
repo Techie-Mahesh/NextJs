@@ -6,6 +6,5 @@ export const config = {
     "/profile",
     "/properties/saved",
     "/messages",
-    "/properties"
   ]
 };
