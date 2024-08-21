@@ -5,7 +5,7 @@ const PropertyHeaderImage = ({ image }: any) => {
     <Box component="section">
       <Box
         component="img"
-        src="https://images.pexels.com/photos/323705/pexels-photo-323705.jpeg"
+        src={image[0]}
         alt=""
         sx={{ objectFit: "cover", height: "400px", width: "100%" }}
       />

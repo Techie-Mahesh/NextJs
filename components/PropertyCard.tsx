@@ -60,7 +60,7 @@ const PropertyCard = (props: any) => {
           <CardMedia
             component="img"
             height="140"
-            image="https://images.pexels.com/photos/323705/pexels-photo-323705.jpeg"
+            image={property?.images[0]}
             alt="green iguana"
             loading="lazy"
           />

@@ -17,7 +17,7 @@ const PropertyPage = async ({ params }: any) => {
   const property: any = await Property.findById(params.id).lean();
   return (
     <>
-      <PropertyHeaderImage />
+      <PropertyHeaderImage image={property.images} />
       <Box sx={{ padding: "10px 30px" }}>
         <Link href="/properties">
           <Button
