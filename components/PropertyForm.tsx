@@ -296,8 +296,6 @@ const PropertyForm: React.FC = ({ property, type }) => {
       isRequired: true
     }
   ];
-  console.log("formFields ==>", formFields);
-
   const handleInputChange = (id: string, value: any, option?: any) => {
     setFormValues((prevValues: any) => {
       const updateAmenities = () => ({

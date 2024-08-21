@@ -12,7 +12,6 @@ import React, { useState } from "react";
 
 const ProfileProperties = ({ properties }) => {
   const [profileProperties, setProfileProperties] = useState(properties);
-  console.log("profileProperties", profileProperties);
 
   return profileProperties?.map(property => (
     <Box mb={5}>

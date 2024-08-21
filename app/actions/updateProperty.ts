@@ -5,8 +5,6 @@ import { getSessionUser } from "@/utils/getSessionUser";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 const updateProperty = async (formData, propertyId) => {
-  console.log("formData ==>", formData, "propertyId ==>", propertyId);
-
   await connectDB();
   const sessionUser = await getSessionUser();
   if (!sessionUser || !sessionUser.userId) {
