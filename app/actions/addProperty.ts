@@ -7,7 +7,7 @@ import { getSessionUser } from "@/utils/getSessionUser";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
-const addProperty = async formData => {
+const addProperty = async (formData: any) => {
   await connectDB();
   const sessionUser = await getSessionUser();
 
