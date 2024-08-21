@@ -14,9 +14,10 @@ import {
   FormHelperText,
   Fab
 } from "@mui/material";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Textarea from "@mui/joy/Textarea";
 import addProperty from "@/app/actions/addProperty";
+import updateProperty from "@/app/actions/updateProperty";
 
 interface Location {
   street: string;
@@ -51,8 +52,8 @@ interface FormValues {
   images: File[];
 }
 
-const PropertyAddForm: React.FC = () => {
-  const [formValues, setFormValues] = React.useState<FormValues>({
+const PropertyForm: React.FC = ({ property, type }) => {
+  const initialFormValues = {
     propertyType: "Apartment",
     listingName: "",
     description: "",
@@ -69,15 +70,49 @@ const PropertyAddForm: React.FC = () => {
     },
     amenities: [],
     price: {
-      monthly: "",
       weekly: "",
+      monthly: "",
       nightly: ""
     },
     sellerName: "",
     sellerEmail: "",
     sellerPhone: "",
     images: []
-  });
+  };
+
+  const [formValues, setFormValues] = useState<FormValues>(initialFormValues);
+
+  useEffect(() => {
+    if (property) {
+      setFormValues({
+        propertyType: property.type,
+        listingName: property.name,
+        description: property.description,
+        location: {
+          street: property.location.street,
+          city: property.location.city,
+          state: property.location.state,
+          zip: property.location.zipcode
+        },
+        propertyDetails: {
+          beds: property.beds,
+          baths: property.baths,
+          squareFeet: property.square_feet
+        },
+        amenities: property.amenities,
+        price: {
+          weekly: property.rates.weekly,
+          monthly: property.rates.monthly,
+          nightly: property.rates.nightly
+        },
+        sellerName: property.seller_info.name,
+        sellerEmail: property.seller_info.email,
+        sellerPhone: property.seller_info.phone,
+        images: property.images
+      });
+    }
+  }, [property]);
+
   const {
     propertyType,
     listingName,
@@ -213,7 +248,7 @@ const PropertyAddForm: React.FC = () => {
           id: "monthly",
           type: "number",
           label: "Monthly",
-          value: price.monthly
+          value: price?.monthly
         },
         {
           id: "weekly",
@@ -261,6 +296,8 @@ const PropertyAddForm: React.FC = () => {
       isRequired: true
     }
   ];
+  console.log("formFields ==>", formFields);
+
   const handleInputChange = (id: string, value: any, option?: any) => {
     setFormValues((prevValues: any) => {
       const updateAmenities = () => ({
@@ -324,34 +361,32 @@ const PropertyAddForm: React.FC = () => {
   const handleAddProperty = async () => {
     const updatedFormValues = await convertImagesToBase64(formValues);
     const data = JSON.stringify(updatedFormValues);
-    console.log(
-      "data ==>",
-      updatedFormValues,
-      updatedFormValues?.images.length
-    );
-
     addProperty(data);
   };
-
-  console.log("formValues ==>", formValues);
+  const handleEditProperty = async()=>{
+    const data = JSON.stringify(formValues);
+    updateProperty(data, property._id);
+  }
 
   return (
     <Container sx={{ padding: "24px 16px" }}>
       <Typography variant="h5" align="center" sx={{ fontWeight: 600, mb: 3 }}>
-        Add Property
+        {type === "edit" ? "Edit Property " : "Add Property"}
       </Typography>
-      {/* <form action={() => addProperty(formValues)}> */}
       <Box>
         {formFields.map((field: any) => (
           <React.Fragment key={field.id}>
-            <InputLabel htmlFor={field.id}>
-              <Typography
-                variant="subtitle2"
-                sx={{ fontWeight: "bolder", color: "black", mb: 1 }}
-              >
-                {field.label}
-              </Typography>
-            </InputLabel>
+            {type === "add" ||
+              (type === "edit" && field.type !== "file" && (
+                <InputLabel htmlFor={field.id}>
+                  <Typography
+                    variant="subtitle2"
+                    sx={{ fontWeight: "bolder", color: "black", mb: 1 }}
+                  >
+                    {field.label}
+                  </Typography>
+                </InputLabel>
+              ))}
 
             <FormControl sx={{ mb: 2 }} fullWidth size="small">
               {field.type === "number" ? (
@@ -369,6 +404,7 @@ const PropertyAddForm: React.FC = () => {
                         type="number"
                         size="small"
                         required={field.isRequired}
+                        value={subField.value}
                         onChange={e =>
                           handleInputChange(field.id, {
                             [subField.id]: e.target.value
@@ -394,12 +430,15 @@ const PropertyAddForm: React.FC = () => {
                   placeholder={field.placeholder}
                   size="small"
                   required={field.isRequired}
+                  value={field.value}
                   onChange={e => handleInputChange(field.id, e.target.value)}
                 />
               ) : field.type === "textArea" ? (
                 <Textarea
                   minRows={5}
                   placeholder={field.placeholder}
+                  required={field.isRequired}
+                  value={field.value}
                   onChange={e => handleInputChange(field.id, e.target.value)}
                 />
               ) : field.id === "location" ? (
@@ -416,6 +455,7 @@ const PropertyAddForm: React.FC = () => {
                         size="small"
                         tabIndex={index}
                         required={subField.isRequired}
+                        value={subField.value}
                         onChange={e =>
                           handleInputChange(field.id, {
                             [subField.id]: e.target.value
@@ -454,20 +494,22 @@ const PropertyAddForm: React.FC = () => {
                   </Box>
                 </FormControl>
               ) : (
-                <OutlinedInput
-                  id={field.id}
-                  placeholder={field.placeholder}
-                  size="small"
-                  type="file"
-                  inputProps={{ accept: "image/*", multiple: true }}
-                  required={field.isRequired}
-                  onChange={e =>
-                    handleInputChange(
-                      field.id,
-                      (e.target as HTMLInputElement).files
-                    )
-                  }
-                />
+                type === "add" && (
+                  <OutlinedInput
+                    id={field.id}
+                    placeholder={field.placeholder}
+                    size="small"
+                    type="file"
+                    inputProps={{ accept: "image/*", multiple: true }}
+                    required={field.isRequired}
+                    onChange={e =>
+                      handleInputChange(
+                        field.id,
+                        (e.target as HTMLInputElement).files
+                      )
+                    }
+                  />
+                )
               )}
             </FormControl>
           </React.Fragment>
@@ -478,15 +520,14 @@ const PropertyAddForm: React.FC = () => {
         color="primary"
         sx={{ width: "100%" }}
         type="submit"
-        onClick={handleAddProperty}
+        onClick={type === "add" ? handleAddProperty : handleEditProperty}
       >
         <Typography variant="h6" sx={{ textTransform: "capitalize" }}>
-          Add Property
+          {type === "edit" ? "Update Property " : "Add Property"}
         </Typography>
       </Fab>
-      {/* </form> */}
     </Container>
   );
 };
 
-export default PropertyAddForm;
+export default PropertyForm;
