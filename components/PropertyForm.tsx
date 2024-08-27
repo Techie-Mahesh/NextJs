@@ -18,6 +18,7 @@ import React, { useState, useEffect } from "react";
 import Textarea from "@mui/joy/Textarea";
 import addProperty from "@/app/actions/addProperty";
 import updateProperty from "@/app/actions/updateProperty";
+import { toast } from "react-toastify";
 
 interface Location {
   street: string;
@@ -141,7 +142,7 @@ const PropertyForm: React.FC = ({ property, type }) => {
       type: "text",
       value: listingName,
       placeholder: "eg. Beautiful Apartment In Miami",
-      isRequired: false
+      isRequired: true
     },
     {
       id: "description",
@@ -169,7 +170,7 @@ const PropertyForm: React.FC = ({ property, type }) => {
           type: "text",
           value: location.city,
           placeholder: "City",
-          isRequired: false
+          isRequired: true
         },
         {
           id: "state",
@@ -177,7 +178,7 @@ const PropertyForm: React.FC = ({ property, type }) => {
           type: "text",
           value: location.state,
           placeholder: "State",
-          isRequired: false
+          isRequired: true
         },
         {
           id: "zip",
@@ -185,7 +186,7 @@ const PropertyForm: React.FC = ({ property, type }) => {
           type: "text",
           value: location.zip,
           placeholder: "Zip",
-          isRequired: false
+          isRequired: true
         }
       ]
     },
@@ -198,13 +199,13 @@ const PropertyForm: React.FC = ({ property, type }) => {
           label: "Beds",
           type: "number",
           value: propertyDetails.beds,
-          isRequired: false
+          isRequired: true
         },
         {
           id: "baths",
           label: "Baths",
           type: "number",
-          isRequired: false,
+          isRequired: true,
           value: propertyDetails.baths
         },
         {
@@ -212,7 +213,7 @@ const PropertyForm: React.FC = ({ property, type }) => {
           label: "Square Feet",
           type: "number",
           value: propertyDetails.squareFeet,
-          isRequired: false
+          isRequired: true
         }
       ]
     },
@@ -277,7 +278,7 @@ const PropertyForm: React.FC = ({ property, type }) => {
       placeholder: "Email",
       type: "text",
       value: sellerEmail,
-      isRequired: false
+      isRequired: true
     },
     {
       id: "sellerPhone",
@@ -285,7 +286,7 @@ const PropertyForm: React.FC = ({ property, type }) => {
       placeholder: "Phone",
       type: "text",
       value: sellerPhone,
-      isRequired: false
+      isRequired: true
     },
     {
       id: "images",
@@ -359,12 +360,19 @@ const PropertyForm: React.FC = ({ property, type }) => {
   const handleAddProperty = async () => {
     const updatedFormValues = await convertImagesToBase64(formValues);
     const data = JSON.stringify(updatedFormValues);
-    addProperty(data);
+    await addProperty(data);
   };
-  const handleEditProperty = async()=>{
+  const handleEditProperty = () => {
     const data = JSON.stringify(formValues);
-    updateProperty(data, property._id);
-  }
+    updateProperty(data, property._id)
+      .then(() => {
+        toast.success("Property updated successfully!!!");
+      })
+      .catch(error => {
+        console.error("Error updating property:", error);
+        toast.error("Failed to update property");
+      });
+  };
 
   return (
     <Container sx={{ padding: "24px 16px" }}>
