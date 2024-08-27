@@ -11,10 +11,12 @@ import BookmarkButton from "@/components/BookmarkButton";
 import ShareButtons from "@/components/ShareButtons";
 import PropertyContactForm from "@/components/PropertyContactForm";
 import PropertyImages from "@/components/PropertyImages";
+import { convertToSerializeableObject } from "@/utils/convertToObject";
 
 const PropertyPage = async ({ params }: any) => {
   await connectDB();
-  const property: any = await Property.findById(params.id).lean();
+  const propertyDoc: any = await Property.findById(params.id).lean();
+  const property = convertToSerializeableObject(propertyDoc);
   return (
     <>
       <PropertyHeaderImage image={property.images} />
@@ -48,9 +50,9 @@ const PropertyPage = async ({ params }: any) => {
           </Grid>
           <Grid item xs={4}>
             <Box sx={{ display: "flex", flexDirection: "column", gap: 4 }}>
-              <BookmarkButton />
-              <ShareButtons />
-              <PropertyContactForm />
+              <BookmarkButton property={property} />
+              <ShareButtons property={property} />
+              <PropertyContactForm property={property} />
             </Box>
           </Grid>
         </Grid>

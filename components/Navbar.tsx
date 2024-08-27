@@ -55,7 +55,7 @@ export default function Navbar() {
     {
       id: "savedProperties",
       label: "Saved Properties",
-      href: "/savedproperties"
+      href: "/properties/saved"
     },
     {
       id: "signOut",
@@ -92,8 +92,8 @@ export default function Navbar() {
     fetchProperties();
   }, []);
   const handleProfile = (id: string) => {
+    setAnchorEl(null);
     if (id === "signOut") {
-      setAnchorEl(null);
       signOut();
     }
   };
